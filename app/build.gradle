@@ -63,4 +63,5 @@ dependencies {
 //    implementation 'com.leon:lfilepickerlibrary:1.7.0'
 //    implementation 'com.github.zp:z_file:1.2.6'
     implementation "com.google.android.material:material:1.0.0"
+    implementation 'com.google.code.gson:gson:2.8.8'
 }

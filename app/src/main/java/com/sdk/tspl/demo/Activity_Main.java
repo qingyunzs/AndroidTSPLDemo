@@ -48,6 +48,7 @@ import androidx.annotation.Nullable;
 //import com.zp.z_file.content.ZFileContentKt;
 //import com.zp.z_file.listener.ZFileSelectResultListener;
 
+import com.google.gson.Gson;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.io.ByteArrayOutputStream;
@@ -102,8 +103,8 @@ public class Activity_Main extends Activity {
     private UsbDevice device = null;
     private static final String ACTION_USB_PERMISSION = "com.HPRTSDKSample";
     private PendingIntent mPermissionIntent = null;
-    private static IPort Printer = null;
     private Handler handler;
+    private static IPort Printer = null;
     private ProgressDialog dialog;
     private static String[] PERMISSIONS_STORAGE = {
             "android.permission.READ_EXTERNAL_STORAGE",
@@ -443,6 +444,7 @@ public class Activity_Main extends Activity {
                         UsbInterface intf = device.getInterface(i);
                         if (intf.getInterfaceClass() == 7) {
                             HavePrinter = true;
+                            Log.w("设备", new Gson().toJson(device));
                             mUsbManager.requestPermission(device, mPermissionIntent);
                         }
                     }
@@ -561,25 +563,49 @@ public class Activity_Main extends Activity {
             startActivityFromChild(this, myIntent, 0);
         } else if (view.getId() == R.id.btnPrintTestPage) {
             try {
-                HPRTPrinterHelper.SelfTest();
-//                HPRTPrinterHelper.isWriteLog = true;
-//                HPRTPrinterHelper.isHex = true;
-//                HPRTPrinterHelper.printAreaSize("50","50");
-//                HPRTPrinterHelper.CLS();
+//                HPRTPrinterHelper.SelfTest();
+                HPRTPrinterHelper.isWriteLog = true;
+                HPRTPrinterHelper.isHex = true;
+                HPRTPrinterHelper.printAreaSize("55","40");
+                HPRTPrinterHelper.CLS(); // 清除打印缓冲区内容
 //                HPRTPrinterHelper.Codepage("USA");
-//                HPRTPrinterHelper.Density("5");
+                HPRTPrinterHelper.Density("5"); // 打印浓度
 //                InputStream inputStream = getAssets().open("itd.bmp");
 //                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-//////                Bitmap bitmap= BitmapFactory.decodeResource(Activity_Main.this.getResources(), R.drawable.itd);
-//////            Bitmap bitmap= BitmapFactory.decodeResource(MainActivity.this.getResources(), R.drawable.itd_copy);
-//                HPRTPrinterHelper.printText("20","25","6","0","3","3",0,"11111");
-//                HPRTPrinterHelper.printText("30","110","4","0","1","1",0,"PREP BY: "+111);
-//                HPRTPrinterHelper.printText("30","140","4","0","1","1",0,"PREP: "+1111);
-//                HPRTPrinterHelper.printText("30","170","4","0","1","1",0,"USE BY: "+1111);
-//                HPRTPrinterHelper.printText("20","200","6","0","3","3",0,"11111");
-////                HPRTPrinterHelper.Print("1","1");
-//                HPRTPrinterHelper.printImage("30","260",bitmap,true,false,1);
+////                Bitmap bitmap= BitmapFactory.decodeResource(Activity_Main.this.getResources(), R.drawable.itd);
+////            Bitmap bitmap= BitmapFactory.decodeResource(MainActivity.this.getResources(), R.drawable.itd_copy);
+                HPRTPrinterHelper.Box("3", "3", "440", "320", "2");
+                HPRTPrinterHelper.printText("5", "15", "0", "0", "1", "1", 0, "云南空港航空食品有限公司");
+                HPRTPrinterHelper.printText("5", "40", "1", "0", "1", "1", 0, "Yunnan International Airport Air Catering Co.,Ltd.");
+
+                HPRTPrinterHelper.Bar("118", "60", "1",  "250"); // 分割线1
+                HPRTPrinterHelper.Bar("5", "60", "440",  "1");
+                HPRTPrinterHelper.printText("12", "65", "0", "0", "1", "1", 0, "品名");
+                HPRTPrinterHelper.printText("120", "65", "1", "0", "1", "1", 0, "(封)剁椒鱼/大麦饭/香菇烧冬瓜100/140/20");
+                HPRTPrinterHelper.printText("12", "90", "1", "0", "1", "1", 0, "Name");
+                HPRTPrinterHelper.Bar("5", "110", "440",  "1");
+                HPRTPrinterHelper.printText("12", "115", "0", "0", "1", "1", 0, "数量");
+                HPRTPrinterHelper.printText("120", "115", "0", "0", "1", "1", 0, "136公斤");
+                HPRTPrinterHelper.Bar("238", "110", "1",  "45"); // 分割线2
+                HPRTPrinterHelper.printText("240", "115", "0", "0", "1", "1", 0, "保质期");
+                HPRTPrinterHelper.Bar("363", "110", "1",  "45"); // 分割线3
+                HPRTPrinterHelper.printText("365", "115", "0", "0", "1", "1", 0, "4天");
+                HPRTPrinterHelper.printText("12", "140", "1", "0", "1", "1", 0, "Quantity");
+                HPRTPrinterHelper.printText("240", "145", "1", "0", "1", "1", 0, "Shelf life");
+                HPRTPrinterHelper.Bar("5", "160", "440",  "1");
+                HPRTPrinterHelper.printText("12", "165", "0", "0", "1", "1", 0, "储存条件");
+                HPRTPrinterHelper.printText("120", "165", "1", "0", "1", "1", 0, "冷藏0-5°C□ 冷冻-18°C□");
+                HPRTPrinterHelper.printText("12", "195", "1", "0", "1", "1", 0, "Storage conditions");
+                HPRTPrinterHelper.Bar("5", "210", "440",  "1");
+                HPRTPrinterHelper.printText("12", "215", "0", "0", "1", "1", 0, "生产日期");
+                HPRTPrinterHelper.printText("120", "215", "1", "0", "1", "1", 0, "2024-12-20 20:06");
+                HPRTPrinterHelper.printText("12", "245", "1", "0", "1", "1", 0, "Production date");
+                HPRTPrinterHelper.Bar("5", "260", "440",  "1");
+//                HPRTPrinterHelper.printBarcode("135", "240", "128", "50", "1", "0", "2", "1", "S12345678901234567890");
+                HPRTPrinterHelper.printQRcode("300", "190", "H", "5", "A", "0", "KGHS-2600941093927922547");
 //                HPRTPrinterHelper.Print("1","1");
+//                HPRTPrinterHelper.printImage("30","260",bitmap,true,false,1);
+                HPRTPrinterHelper.Print("1","1");
             } catch (Exception e) {
                 Log.e("HPRTSDKSample", (new StringBuilder("Activity_Main --> onClickWIFI ")).append(e.getMessage()).toString());
             }
